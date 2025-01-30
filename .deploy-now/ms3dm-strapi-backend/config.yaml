@@ -1,0 +1,32 @@
+deploy:
+  # Runtime configuration
+  runtime:
+    nodejs:
+      version: 18
+      startCommand: "npm run start"
+      buildCommand: "npm run build"
+      port: 1337
+
+  # Environment configuration
+  environment:
+    type: "production"
+    variables:
+      NODE_ENV: "production"
+      HOST: "0.0.0.0"
+      PORT: "1337"
+      URL: "https://content.ms3dm.tech"
+      DATABASE_CLIENT: "mysql"
+      DATABASE_SSL: "false"
+
+  # CORS and security headers
+  headers:
+    - pattern: "/*"
+      headers:
+        - key: "Access-Control-Allow-Origin"
+          value: "https://content.ms3dm.tech, https://ms3dm.tech"
+        - key: "Access-Control-Allow-Methods"
+          value: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS"
+        - key: "Access-Control-Allow-Headers"
+          value: "Content-Type, Authorization, Origin, Accept"
+        - key: "Access-Control-Allow-Credentials"
+          value: "true" 
