@@ -1,18 +1,19 @@
-setup:
-  runtime:
+# Version of Deploy Now
+version: 2022-07-21
+
+# Deployment configuration
+deployment:
+  type: "node"
+  platform:
     nodejs: 18
-  webserver:
-    locations:
-      "/":
-        type: node
-        port: 1337
-        headers:
-          - pattern: "/*"
-            headers:
-              Access-Control-Allow-Origin: "https://content.ms3dm.tech, https://ms3dm.tech"
-              Access-Control-Allow-Methods: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS"
-              Access-Control-Allow-Headers: "Content-Type, Authorization, Origin, Accept"
-              Access-Control-Allow-Credentials: "true"
+
+  build:
+    command: "npm run build"
+    output: "dist"
+
+  runtime:
+    command: "npm run start"
+    port: 1337
 
   env:
     NODE_ENV: "production"
@@ -20,4 +21,12 @@ setup:
     PORT: "1337"
     URL: "https://content.ms3dm.tech"
     DATABASE_CLIENT: "mysql"
-    DATABASE_SSL: "false" 
+    DATABASE_SSL: "false"
+
+  headers:
+    - pattern: "/*"
+      headers:
+        Access-Control-Allow-Origin: "https://content.ms3dm.tech, https://ms3dm.tech"
+        Access-Control-Allow-Methods: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS"
+        Access-Control-Allow-Headers: "Content-Type, Authorization, Origin, Accept"
+        Access-Control-Allow-Credentials: "true" 
