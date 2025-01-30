@@ -51,12 +51,14 @@ jobs:
           SITE_URL: ${{ inputs.site-url }}
           STRAPI_LICENSE: ${{ secrets.STRAPI_LICENSE }}
           TRANSFER_TOKEN_SALT: ${{ secrets.TRANSFER_TOKEN_SALT }}
-          # CORS Configuration
-          STRAPI_ADMIN_BACKEND_URL: ${{ inputs.site-url }}
-          STRAPI_URL: ${{ inputs.site-url }}
+          # CORS and URL Configuration
+          STRAPI_ADMIN_BACKEND_URL: https://content.ms3dm.tech
+          STRAPI_URL: https://content.ms3dm.tech
+          PUBLIC_URL: https://content.ms3dm.tech
           # Security settings
-          STRAPI_SECURITY_CORS_ORIGIN: "*"
+          STRAPI_SECURITY_CORS_ORIGIN: https://content.ms3dm.tech,https://ms3dm.tech,http://localhost:1337,http://localhost:3000
           STRAPI_SECURITY_CORS_ENABLED: true
+          STRAPI_SECURITY_CORS_CREDENTIALS: true
         run: |
           npm install && npm run build
 

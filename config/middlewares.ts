@@ -7,7 +7,7 @@ export default [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          'connect-src': ["'self'", 'https:'],
+          'connect-src': ["'self'", 'https:', 'https://content.ms3dm.tech'],
           'img-src': ["'self'", 'data:', 'blob:', 'https:'],
           'media-src': ["'self'", 'data:', 'blob:', 'https:'],
           upgradeInsecureRequests: null,
@@ -19,8 +19,11 @@ export default [
     name: 'strapi::cors',
     config: {
       enabled: true,
-      headers: '*',
-      origin: ['*']
+      origin: ['https://content.ms3dm.tech', 'https://ms3dm.tech', 'http://localhost:1337', 'http://localhost:3000'],
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+      headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
+      keepHeaderOnError: true,
+      credentials: true
     }
   },
   'strapi::poweredBy',
