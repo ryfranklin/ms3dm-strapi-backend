@@ -51,6 +51,12 @@ jobs:
           SITE_URL: ${{ inputs.site-url }}
           STRAPI_LICENSE: ${{ secrets.STRAPI_LICENSE }}
           TRANSFER_TOKEN_SALT: ${{ secrets.TRANSFER_TOKEN_SALT }}
+          # CORS Configuration
+          STRAPI_ADMIN_BACKEND_URL: ${{ inputs.site-url }}
+          STRAPI_URL: ${{ inputs.site-url }}
+          # Security settings
+          STRAPI_SECURITY_CORS_ORIGIN: "*"
+          STRAPI_SECURITY_CORS_ENABLED: true
         run: |
           npm install && npm run build
 
