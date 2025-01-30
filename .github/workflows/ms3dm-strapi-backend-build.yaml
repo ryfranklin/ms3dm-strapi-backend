@@ -1,0 +1,68 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: build
+
+jobs:
+# Please do not rename this job
+  build-project:
+    name: build ms3dm-strapi-backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: v18.x
+
+      - name: Build Node assets
+        env:
+          ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
+          API_TOKEN_SALT: ${{ secrets.API_TOKEN_SALT }}
+          APP_KEYS: ${{ secrets.APP_KEYS }}
+          CI: true
+          DATABASE_CLIENT: mysql
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_PORT: 3306
+          DATABASE_SSL: false
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          HOST: 0.0.0.0
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: 1337
+          SITE_URL: ${{ inputs.site-url }}
+          STRAPI_LICENSE: ${{ secrets.STRAPI_LICENSE }}
+          TRANSFER_TOKEN_SALT: ${{ secrets.TRANSFER_TOKEN_SALT }}
+        run: |
+          npm install && npm run build
+
+# Please do not touch the following action
+      - name: Store deployment content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-us.ionos.space
+          project-id: 92994d41-204c-47f3-802f-b24b7a73b801
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/ms3dm-strapi-backend/config.yaml
+          action: upload
